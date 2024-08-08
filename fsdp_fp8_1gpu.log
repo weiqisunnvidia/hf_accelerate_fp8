@@ -1,0 +1,74 @@
+Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in LlamaForCausalLM is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in LlamaModel is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:408: UserWarning: `log_with=wandb` was passed but no supported trackers are currently installed.
+  warnings.warn(f"`log_with={log_with}` was passed but no supported trackers are currently installed.")
+Repo card metadata block was not found. Setting CardData to empty.
+[WARNING  | huggingface_hub.repocard]: Repo card metadata block was not found. Setting CardData to empty.
+/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_init_utils.py:440: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+  warnings.warn(
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:1561: UserWarning: Upcasted low precision parameters in LlamaForCausalLM because mixed precision turned on in FSDP. Affects: model.embed_tokens.weight, model.norm.weight, lm_head.weight.
+  warnings.warn(
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:1561: UserWarning: Upcasted low precision parameters in TELlamaDecoderLayer because mixed precision turned on in FSDP. Affects: self_attention.layernorm_qkv.layer_norm_weight, self_attention.layernorm_qkv.query_weight, self_attention.layernorm_qkv.key_weight, self_attention.layernorm_qkv.value_weight, self_attention.proj.weight, layernorm_mlp.layer_norm_weight, layernorm_mlp.fc1_weight, layernorm_mlp.fc2_weight.
+  warnings.warn(
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:1567: UserWarning: FSDP upcast of low precision parameters may affect the precision of model checkpoints.
+  warnings.warn(
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/scratch.weiqsun_wwfo/hf_accelerate_fp8/test.py", line 19, in <module>
+[rank0]:     finetune_model(model, hyperparams, accelerator, train_dataloader, optimizer, lr_scheduler)
+[rank0]:   File "/home/scratch.weiqsun_wwfo/hf_accelerate_fp8/utils.py", line 154, in finetune_model
+[rank0]:     outputs = model(**batch)
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1552, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1561, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py", line 840, in forward
+[rank0]:     args, kwargs = _pre_forward(
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_runtime_utils.py", line 380, in _pre_forward
+[rank0]:     unshard_fn(state, handle)
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_runtime_utils.py", line 415, in _pre_forward_unshard
+[rank0]:     _unshard(state, handle, state._unshard_stream, state._pre_unshard_stream)
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_runtime_utils.py", line 288, in _unshard
+[rank0]:     ran_pre_unshard = handle.pre_unshard()
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_flat_param.py", line 1254, in pre_unshard
+[rank0]:     ret = self._writeback_orig_params()
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+[rank0]:     return func(*args, **kwargs)
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_flat_param.py", line 2251, in _writeback_orig_params
+[rank0]:     self._writeback_tensor(
+[rank0]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_flat_param.py", line 2350, in _writeback_tensor
+[rank0]:     raise RuntimeError(
+[rank0]: RuntimeError: Cannot writeback when the parameter shape changes
+[rank0]: Expects torch.Size([525336576]) but got torch.Size([128256, 4096])
+[rank0]:[W808 02:08:38.084759169 ProcessGroupNCCL.cpp:1187] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+E0808 02:08:39.501000 139638911584064 torch/distributed/elastic/multiprocessing/api.py:832] failed (exitcode: 1) local_rank: 0 (pid: 6069) of binary: /usr/bin/python
+Traceback (most recent call last):
+  File "/home/weiqsun/.local/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+  File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/commands/accelerate_cli.py", line 48, in main
+    args.func(args)
+  File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/commands/launch.py", line 1093, in launch_command
+    multi_gpu_launcher(args)
+  File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/commands/launch.py", line 734, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 891, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 132, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 263, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+test.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-08-08_02:08:39
+  host      : viking-cr-196
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 6069)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

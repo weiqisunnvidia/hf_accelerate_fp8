@@ -1,0 +1,85 @@
+Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in LlamaForCausalLM is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in LlamaModel is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in LlamaForCausalLM is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in LlamaModel is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:408: UserWarning: `log_with=wandb` was passed but no supported trackers are currently installed.
+  warnings.warn(f"`log_with={log_with}` was passed but no supported trackers are currently installed.")
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:408: UserWarning: `log_with=wandb` was passed but no supported trackers are currently installed.
+  warnings.warn(f"`log_with={log_with}` was passed but no supported trackers are currently installed.")
+Repo card metadata block was not found. Setting CardData to empty.
+[WARNING  | huggingface_hub.repocard]: Repo card metadata block was not found. Setting CardData to empty.
+Repo card metadata block was not found. Setting CardData to empty.
+[WARNING  | huggingface_hub.repocard]: Repo card metadata block was not found. Setting CardData to empty.
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:1561: UserWarning: Upcasted low precision parameters in LlamaForCausalLM because mixed precision turned on in FSDP. Affects: model.embed_tokens.weight, model.norm.weight, lm_head.weight.
+  warnings.warn(
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:1561: UserWarning: Upcasted low precision parameters in TELlamaDecoderLayer because mixed precision turned on in FSDP. Affects: self_attention.layernorm_qkv.layer_norm_weight, self_attention.layernorm_qkv.query_weight, self_attention.layernorm_qkv.key_weight, self_attention.layernorm_qkv.value_weight, self_attention.proj.weight, layernorm_mlp.layer_norm_weight, layernorm_mlp.fc1_weight, layernorm_mlp.fc2_weight.
+  warnings.warn(
+/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py:1567: UserWarning: FSDP upcast of low precision parameters may affect the precision of model checkpoints.
+  warnings.warn(
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/home/scratch.weiqsun_wwfo/hf_accelerate_fp8/test.py", line 15, in <module>
+[rank1]:     accelerator, model, optimizer, train_dataloader, lr_scheduler = wrap_with_accelerator(model, hyperparams)
+[rank1]:   File "/home/scratch.weiqsun_wwfo/hf_accelerate_fp8/utils.py", line 137, in wrap_with_accelerator
+[rank1]:     model, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
+[rank1]:   File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py", line 1316, in prepare
+[rank1]:     result = tuple(
+[rank1]:   File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py", line 1317, in <genexpr>
+[rank1]:     self._prepare_one(obj, first_pass=True, device_placement=d) for obj, d in zip(args, device_placement)
+[rank1]:   File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py", line 1190, in _prepare_one
+[rank1]:     return self.prepare_model(obj, device_placement=device_placement)
+[rank1]:   File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/accelerator.py", line 1488, in prepare_model
+[rank1]:     model = FSDP(model, **kwargs)
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py", line 483, in __init__
+[rank1]:     _auto_wrap(
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_wrap_utils.py", line 101, in _auto_wrap
+[rank1]:     _recursive_wrap(**recursive_wrap_kwargs, **root_kwargs)  # type: ignore[arg-type]
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/wrap.py", line 543, in _recursive_wrap
+[rank1]:     wrapped_child, num_wrapped_params = _recursive_wrap(
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/wrap.py", line 543, in _recursive_wrap
+[rank1]:     wrapped_child, num_wrapped_params = _recursive_wrap(
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/wrap.py", line 543, in _recursive_wrap
+[rank1]:     wrapped_child, num_wrapped_params = _recursive_wrap(
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/wrap.py", line 561, in _recursive_wrap
+[rank1]:     return _wrap(module, wrapper_cls, **kwargs), nonwrapped_numel
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/wrap.py", line 490, in _wrap
+[rank1]:     return wrapper_cls(module, **kwargs)
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py", line 509, in __init__
+[rank1]:     _init_param_handle_from_module(
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_init_utils.py", line 587, in _init_param_handle_from_module
+[rank1]:     state.compute_device = _get_compute_device(
+[rank1]:   File "/usr/local/lib/python3.10/dist-packages/torch/distributed/fsdp/_init_utils.py", line 1050, in _get_compute_device
+[rank1]:     raise ValueError(
+[rank1]: ValueError: Inconsistent compute device and `device_id` on rank 1: cuda:0 vs cuda:1
+W0808 02:09:14.885000 140256901117760 torch/distributed/elastic/multiprocessing/api.py:857] Sending process 6359 closing signal SIGTERM
+E0808 02:09:15.100000 140256901117760 torch/distributed/elastic/multiprocessing/api.py:832] failed (exitcode: 1) local_rank: 1 (pid: 6360) of binary: /usr/bin/python
+Traceback (most recent call last):
+  File "/home/weiqsun/.local/bin/accelerate", line 8, in <module>
+    sys.exit(main())
+  File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/commands/accelerate_cli.py", line 48, in main
+    args.func(args)
+  File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/commands/launch.py", line 1093, in launch_command
+    multi_gpu_launcher(args)
+  File "/home/scratch.weiqsun_wwfo/accelerate/src/accelerate/commands/launch.py", line 734, in multi_gpu_launcher
+    distrib_run.run(args)
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/run.py", line 891, in run
+    elastic_launch(
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 132, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/usr/local/lib/python3.10/dist-packages/torch/distributed/launcher/api.py", line 263, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+test.py FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2024-08-08_02:09:14
+  host      : viking-cr-196
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 6360)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

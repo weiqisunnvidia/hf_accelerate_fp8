@@ -6,7 +6,7 @@ from utils import *
 ## !!! `model_name` attr must point to the location of the model weights !!!
 # For Llama 2, download weights from https://huggingface.co/meta-llama/Llama-2-7b-hf (Hugging Face weight format).
 # For Llama 3, download weights from https://huggingface.co/meta-llama/Meta-Llama-3-8B (Hugging Face weight format).
-hyperparams.model_name = "/home/scratch.weiqsun_wwfo/models/Meta-Llama-3-8B/" # <== Add model weight location here e.g. "/path/to/downloaded/llama/weights"
+hyperparams.model_name =  # <== Add model weight location here e.g. "/path/to/downloaded/llama/weights"
 hyperparams.mixed_precision = "fp8"
 
 
