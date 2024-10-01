@@ -1,30 +1,16 @@
 # hf_accelerate_fp8
+Developed performance benchmarking script for testing Transformer Engine in HuggingFace Accelerate for LLaMa models based on https://github.com/NVIDIA/TransformerEngine/tree/main/docs/examples/te_llama and https://github.com/huggingface/accelerate/tree/main/benchmarks/fp8/transformer_engine. 
+
 - Installation:
 
     ```bash
-    docker run --gpus all -it --rm nvcr.io/nvidia/pytorch:24.07-py3 bash
-    pip install datasets evaluate transformers
-    git clone -b muellerzr-fp8-deepspeed-support https://github.com/huggingface/accelerate.git
-    cd accelerate 
-    pip install -e .
+    docker run --gpus all -it --rm nvcr.io/nvidia/pytorch:24.09-py3 bash
+    pip install accelerate datasets evaluate transformers
     ```
 
-- LLaMa 3 8B training with FP8 and without FSDP:
+- Running:
+
+    Set `model_name`, `mixed_precision`, `batch_size`, and `enable_te_llama` in `tutorial_accelerate_hf_llama_with_te.py`
     ```bash
-    python test.py
+    accelerate launch --num_processes 8 tutorial_accelerate_hf_llama_with_te.py
     ```
-    Result:
-    ```bash
-    10 finetuning steps complete!
-    Average time taken per step: 185 milliseconds
-    ```
-- LLaMa 3 8B training with FP8+FSDP on single H100
-    ```bash
-    accelerate launch --config_file fsdp_fp8_1gpu.yaml test.py
-    ```
-    Error message saved in [fsdp_fp8_1gpu.log](./fsdp_fp8_1gpu.log)
-- LLaMa 3 8B training with FP8+FSDP on 2 H100
-    ```bash
-    accelerate launch --config_file fsdp_fp8_2gpu.yaml test.py
-    ```
-    Error message saved in [fsdp_fp8_2gpu.log](./fsdp_fp8_2gpu.log)

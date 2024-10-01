@@ -66,7 +66,7 @@ class TELlamaDecoderLayer(te.pytorch.TransformerLayer):
             num_gqa_groups=config.num_key_value_heads,
         )
         te_rope = RotaryPositionEmbedding(config.hidden_size // config.num_attention_heads)
-        self.te_rope_emb = te_rope(max_seq_len=config.max_position_embeddings).cuda()
+        self.te_rope_emb = te_rope(max_seq_len=config.max_position_embeddings)#.cuda()
 
     def forward(self, hidden_states, *args, attention_mask, **kwargs):
         """
@@ -102,8 +102,16 @@ class TELlamaForCausalLM:
         Custom method adapted from `from_pretrained` method in HuggingFace
         Transformers repo: https://github.com/huggingface/transformers/blob/f497f564bb76697edab09184a252fc1b1a326d1e/src/transformers/modeling_utils.py#L2579
         """
-        vanilla_model = cls(config).to(kwargs["torch_dtype"])
-        is_local = os.path.isdir(pretrained_model_name_or_path)
+        # Before loading the model, set the default dtype for torch
+        torch.set_default_dtype(kwargs["torch_dtype"])
+
+        # Load the vanilla model weights
+        max_memory_allocated = torch.cuda.max_memory_allocated()
+        print(f"Peak GPU memory allocated by PyTorch before vanilla_model: {max_memory_allocated / 1024**3:.2f} GB")
+        vanilla_model = cls(config)
+        
+        max_memory_allocated = torch.cuda.max_memory_allocated()
+        print(f"Peak GPU memory allocated by PyTorch after vanilla_model: {max_memory_allocated / 1024**3:.2f} GB")
         subfolder = ""
         variant = None
         if os.path.isfile(
@@ -133,7 +141,7 @@ class TELlamaForCausalLM:
         else:
             raise AssertionError("Only sharded PyTorch ckpt format supported at the moment")
 
-        resolved_archive_file, sharded_metadata = get_checkpoint_shard_files(
+        resolved_archive_file, _ = get_checkpoint_shard_files(
             pretrained_model_name_or_path,
             archive_file,
         )
